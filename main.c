@@ -16,6 +16,8 @@ int main() {
       srand(getpid());
       int timer = rand() % 5 + 1;
       printf("\033[38;5;226m%d %d\033[0m sec\n", getpid(), timer);
+      sleep(timer);
+      printf("\033[38;5;226m%d\033[0m finished after \033[38;5;226m%d\033[0m sec\n", getpid(), timer);
   } else if(p1 > 0) {
       p2 = fork();
       if(p2 < 0){
@@ -25,8 +27,14 @@ int main() {
         srand(getpid());
         int timer = rand() % 5 + 1;
         printf("\033[38;5;226m%d %d\033[0m sec\n", getpid(), timer);
+        sleep(timer);
+        printf("\033[38;5;226m%d\033[0m finished after \033[38;5;226m%d\033[0m sec\n", getpid(), timer);
+      } else {
+        int * status;
+        wait(status);
+        printf("%d\n", WEXITSTATUS(*status));
       }
-    printf("%d %d\n", p1, p2);
+
   }
   return 0;
 }
