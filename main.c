@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
-
 int main() {
   printf("\033[38;5;226m%d\033[0m about to create \033[38;5;196m2\033[0m child processes\n", getpid());
   pid_t p1, p2;
@@ -18,6 +17,7 @@ int main() {
       printf("\033[38;5;226m%d %d\033[0m sec\n", getpid(), timer);
       sleep(timer);
       printf("\033[38;5;226m%d\033[0m finished after \033[38;5;226m%d\033[0m sec\n", getpid(), timer);
+      exit(timer);
   } else if(p1 > 0) {
       p2 = fork();
       if(p2 < 0){
@@ -29,12 +29,13 @@ int main() {
         printf("\033[38;5;226m%d %d\033[0m sec\n", getpid(), timer);
         sleep(timer);
         printf("\033[38;5;226m%d\033[0m finished after \033[38;5;226m%d\033[0m sec\n", getpid(), timer);
-      } else {
-        int * status;
-        wait(status);
-        printf("%d\n", WEXITSTATUS(*status));
+        exit(timer);
+    } else {
+        int status = 0;
+        pid_t child = wait(&status);
+        int sleep_time = WEXITSTATUS(status);
+        printf("Main Process %d is done. Child %d slept for %d sec\n", getpid(), child, sleep_time);
       }
-
   }
   return 0;
 }
