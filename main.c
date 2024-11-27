@@ -34,7 +34,7 @@ int main() {
         int status = 0;
         pid_t child = wait(&status);
         int sleep_time = WEXITSTATUS(status);
-        printf("Main Process %d is done. Child %d slept for %d sec\n", getpid(), child, sleep_time);
+        printf("Main Process \033[38;5;226m%d\033[0m is done. Child \033[38;5;226m%d\033[0m slept for \033[38;5;226m%d\033[0m sec\n", getpid(), child, sleep_time);
       }
   }
   return 0;
